@@ -2,9 +2,11 @@ package datamanagement;
 
 import java.util.List;
 import org.jdom.*;
-
+//No comment and Javadoc ( do not have any comments)
+//A class which only has private constructors should be final
 public class StudentUnitRecordManager {
-
+//Avoid variables with short names
+//Avoid using redundant field initializer for 's'
 private static StudentUnitRecordManager s = null;
             private StudentUnitRecordMap rm;
     private java.util.HashMap<String,StudentUnitRecordList> ur;
@@ -13,6 +15,7 @@ private java.util.HashMap<Integer,StudentUnitRecordList> sr;
         if (s == null ) s = new StudentUnitRecordManager(); return s;}
             private StudentUnitRecordManager() {
         rm = new StudentUnitRecordMap();
+    //should import HaspMap
     ur = new java.util.HashMap<>();
     sr = new java.util.HashMap<>();}
     public IStudentUnitRecord getStudentUnitRecord( Integer studentID, String unitCode ) {
@@ -27,6 +30,7 @@ return ir != null ? ir : createStudentUnitRecord(studentID, unitCode);}
                rm.put(ir.getStudentID().toString()+ir.getUnitCode(), ir);return ir;
 }
 }
+//Avoid throwing raw exception types.
 throw new RuntimeException("DBMD: createStudent : student unit record not in file");}
         public StudentUnitRecordList getRecordsByUnit( String unitCode ) {
     StudentUnitRecordList recs = ur.get(unitCode);
@@ -45,7 +49,9 @@ public StudentUnitRecordList getRecordsByStudent( Integer studentID ) {
     if ( recs != null ) return recs; recs = new StudentUnitRecordList();
         for (Element el : (List<Element>) XMLManager.getXML().getDocument().getRootElement().getChild("studentUnitRecordTable").getChildren("record")) 
             if (studentID.toString().equals(el.getAttributeValue("sid"))) 
-                recs.add(new StudentUnitRecordProxy( new Integer(el.getAttributeValue("sid")), el.getAttributeValue("uid")));
+             //Avoid instantiating Integer objects. Call Integer.valueOf() 
+           	// instead.
+            	recs.add(new StudentUnitRecordProxy( new Integer(el.getAttributeValue("sid")), el.getAttributeValue("uid")));
                 if ( recs.size() > 0 ) 
                     sr.put(studentID, recs); // be careful - this could be empty
                         return recs;
@@ -57,27 +63,12 @@ public StudentUnitRecordList getRecordsByStudent( Integer studentID ) {
                 el.setAttribute("asg1", new Float(irec.getAsg1()).toString());
                 
                 
-                
+        //Avoid instantiating new objects inside loops        
         el.setAttribute("asg2", new Float(irec.getAsg2()).toString());
         el.setAttribute("exam", new Float(irec.getExam()).toString());
         XMLManager.getXML().saveDocument(); //write out the XML file for continuous save
         return;
 }}
         
-        
-        
-        
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        				//Avoid throwing raw exception types. 
                         throw new RuntimeException("DBMD: saveRecord : no such student record in data");}}
