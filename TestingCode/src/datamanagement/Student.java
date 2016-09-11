@@ -1,5 +1,8 @@
 package datamanagement;
-
+/** 
+* @author 
+* @version. 
+*/
 public class Student implements IStudent {
     private Integer id; private String fn;
             private String ln;
